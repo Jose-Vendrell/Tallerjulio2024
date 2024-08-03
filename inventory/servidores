@@ -1,9 +1,8 @@
 [centos]
-server01 ansible_host=192.168.56.104
+server01 ansible_host=192.168.56.103
 
 [ubuntu]
-server02 ansible_host=192.168.56.20
-server03 ansible_host=192.168.56.102
+server02 ansible_host=192.168.56.105
 
 [linux:children]
 centos
