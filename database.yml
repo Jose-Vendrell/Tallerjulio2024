@@ -42,11 +42,16 @@
       
 ## Instalación de MariaDB
   
-  - name: MariaDB instalado
+  - name: MariaDB server instalado
     ansible.builtin.apt:
       name: mariadb-server
       state: present
-    
+
+  - name: MariaDB cliente instalado
+    ansible.builtin.apt:
+      name: mariadb-client
+      state: present
+  
   - name: Cambiar la configuracion para escuchar en todas las interfaces
     ansible.builtin.lineinfile:
       path: /etc/mysql/mariadb.conf.d/50-server.cnf
