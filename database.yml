@@ -71,6 +71,7 @@
       port: '3306'
       protocol: tcp
       direction: in
+      state: enabled
 
 ##  Configuracion de la base de datos
 
@@ -108,7 +109,7 @@
       
   handlers:
 
-  - name: Restart mariadb
+  - name: Reiniciar mariadb
     ansible.builtin.systemd_service: 
       name: mariadb
       state: restarted
