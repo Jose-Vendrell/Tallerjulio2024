@@ -1,0 +1,109 @@
+---
+- name: Configuracion servidor base de datos en Ubuntu
+  hosts: database
+  become: true
+  user: sysadmin
+
+  tasks:
+  
+## Configuracion Firewall y trafico
+
+  - name: UFW instalado
+    ansible.builtin.apt:
+      name: ufw
+      state: present
+
+  - name: Permitir puerto 22 en ufw
+    community.general.ufw:
+      rule: allow
+      name: OpenSSH
+
+  - name: Defino politicas de tráfico entrante
+    community.general.ufw:
+      policy: allow
+      direction: outgoing
+      state: enabled
+
+  - name: Defino politicas de tráfico entrante
+    community.general.ufw:
+      policy: deny
+      direction: incoming
+      state: enabled
+
+  - name: servicio UFW levantado y activo
+    ansible.builtin.systemd_service:
+      name: ufw
+      state: started
+      enabled: true
+      
+  - name: Actualizar indice de paquetes Apt
+    apt:
+      update-cache: true
+      
+## Instalación de MariaDB
+  
+  - name: MariaDB instalado
+    ansible.builtin.apt:
+      name: mariadb-server
+      state: present
+    
+  - name: Cambiar la configuracion para escuchar en todas las interfaces
+    ansible.builtin.lineinfile:
+      path: /etc/mysql/mariadb.conf.d/50-server.cnf
+      regexp: '^bind-address'
+      line: 'bind-address         = 0.0.0.0'
+    notify: Restart mariadb
+
+  - name: Servidor Mariadb levantado
+    ansible.builtin.systemd_service: 
+      name: mariadb
+      state: started
+      enabled: true
+
+  - name: Habilitamos en ufw la conexión a mariadb
+    community.general.ufw:
+      rule: allow
+      port: '3306'
+      protocol: tcp
+      direction: in
+
+##  Configuracion de la base de datos
+
+  - name: Creacion base de datos Todo
+    community.mysql.mysql_db:
+      check_implicit_admin: true
+      login_host: "{{ hostvars[inventory_hostname].ansible_host }}"
+      login_user: root
+      login_password: dbadmin
+      name: todo
+      state: import
+      target: ./files/todo.sql
+    delegate_to: localhost
+    connection: local
+
+  - name: Create Mariadb user
+    mysql_user:
+      name: "{{ mariadb_user }}"
+      password: "{{ mariadb_user_password }}"
+      host: localhost
+      priv: "{{ mariadb_database }}.*:ALL"
+      state: present
+      
+## Remover base de datos de prueba
+
+  - name: Remove test database and access
+    mysql_db:
+      name: test
+      state: absent
+
+  - name: Recargar tablas de priviligios
+    mysql_privs:
+      name: "{{ mariadb_user }}"
+      state: present
+      
+  handlers:
+
+  - name: Restart mariadb
+    ansible.builtin.systemd_service: 
+      name: mariadb
+      state: restarted
