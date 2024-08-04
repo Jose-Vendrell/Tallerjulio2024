@@ -17,6 +17,30 @@
       enabled: true
       state: started
 
+  - name: Crear directorio document root
+    ansible.builtin.file:
+      path: /var/www/html/obligatorio
+      state: directory
+      owner: apache
+      group: apache
+      mode: '0755'
+
+  - name: Copiar pagina index.j2
+    ansible.builtin.copy:
+      src: ./templates/index.j2
+      dest: /var/www/html/obligatorio/index.html
+      owner: apache
+      group: apache
+      mode: '0644'
+      
+  - name: Configurar virtualhost 80
+    ansible.builtin.template: 
+      src: ./files/virtualhost.conf
+      dest: /etc/httpd/conf.d
+      owner: apache
+      group: apache
+      mode: '0644'
+  
   - name: Abrir puertos 80 en firewall
     ansible.posix.firewalld:
       service: http
@@ -30,31 +54,14 @@
       permanent: true
       state: enabled
     notift: Reinicio firewalld
-
-  - name: Crear directorio document root
-    ansible.builtin.file:
-      path: /var/www/html/ejemplo
-      state: directory
-      owner: apache
-      group: apache
-      mode: '0755'
-
-  - name: Copiar pagina indice del sitio
-    ansible.builtin.copy:
-      src: ./templates/index.j2
-      dest: /var/www/ejemplo/html/index.html
-      owner: apache
-      group: apache
-      mode: '0644'
-
-  - name: Configurar virtualhost
-    ansible.builtin.copy: 
-      src: ./files/virtualhost.conf
-      dest: /etc/httpd/conf.d
-    notify: Reiniciar apache
-        
+       
   handlers:
-
+  
+- name: Reinicio Firewalld:
+     ansible.builtin.systemd:
+       name: firewalld
+       state: reload
+  
   - name: Reiniciar apache
     ansible.builtin.systemd_service:
       name: httpd
