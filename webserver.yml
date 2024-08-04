@@ -48,9 +48,9 @@
       mode: '0644'
 
   - name: Configurar virtualhost
-    ansible.builtin.template: 
-     src: ./files/virtualhost.conf
-     dest: /etc/httpd/conf.d
+    ansible.builtin.copy: 
+      src: ./files/virtualhost.conf
+      dest: /etc/httpd/conf.d
     notify: Reiniciar apache
         
   handlers:
