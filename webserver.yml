@@ -6,64 +6,53 @@
 
   tasks:
 
-    - name: Instalar httpd (Apache)
-      ansible.builtin.dnf:
-        name: httpd
-        state: present
+  - name: Instalar httpd (Apache)
+    ansible.builtin.dnf:
+      name: httpd
+      state: present
 
-    - name: Levantar y habilitar servicio httpd
-      ansible.builtin.systemd_service:
-        name: httpd
-        enabled: true
-        state: started
+  - name: Levantar y habilitar servicio httpd
+    ansible.builtin.systemd_service:
+      name: httpd
+      enabled: true
+      state: started
 
-    - name: Abrir puertos 80 en firewall
-      ansible.posix.firewalld:
-        service: http
-        permanent: true
-        state: enabled
-      notify: Reinicio firewalld
+  - name: Abrir puertos 80 en firewall
+    ansible.posix.firewalld:
+      service: http
+      permanent: true
+      state: enabled
+    notify: Reinicio firewalld
     
-    - name: Abrir puerto 8080 en firewall
-      ansible.posix.firewalld:
-        port: 8080/tcp
-        permanent: true
-        state: enabled
-      notift: Reinicio firewalld
+  - name: Abrir puerto 8080 en firewall
+    ansible.posix.firewalld:
+      port: 8080/tcp
+      permanent: true
+      state: enabled
+    notift: Reinicio firewalld
 
-    - name: Crear directorio document root
-      ansible.builtin.file:
-        path: /var/www/html/ejemplo
-        state: directory
-        owner: apache
-        group: apache
-        mode: '0755'
+  - name: Crear directorio document root
+    ansible.builtin.file:
+      path: /var/www/html/ejemplo
+      state: directory
+      owner: apache
+      group: apache
+      mode: '0755'
 
-    - name: Copiar pagina indice del sitio
-      ansible.builtin.copy:
-        src: ./templates/index.j2
-        dest: /var/www/ejemplo/html/index.html
-        owner: apache
-        group: apache
-        mode: '0644'
+  - name: Copiar pagina indice del sitio
+    ansible.builtin.copy:
+      src: ./templates/index.j2
+      dest: /var/www/ejemplo/html/index.html
+      owner: apache
+      group: apache
+      mode: '0644'
 
-    - name: Configurar virtualhost
-      ansible.builtin.template: 
-        src: ./files/virtualhost.conf
-        dest: /etc/httpd/conf.d
-        notify: Reiniciar apache
-
-    
-    - name: Permito conexiones al puerto 80
-      ansible.posix.firewalld:
-        service: "{{ item }}"
-        state: enabled
-        immediate: true
-        permanent: true
-      loop: 
-        - http
-        - https
-
+  - name: Configurar virtualhost
+    ansible.builtin.template: 
+     src: ./files/virtualhost.conf
+     dest: /etc/httpd/conf.d
+    notify: Reiniciar apache
+        
   handlers:
 
   - name: Reiniciar apache
