@@ -17,9 +17,9 @@
         enabled: true
         state: started
 
-    - name: Abrir puertos 80 y 8080 en firewall
+    - name: Abrir puertos 80 en firewall
       ansible.posix.firewalld:
-        port: 80/tcp
+        service: http
         permanent: true
         state: enabled
       notify: Reinicio firewalld
