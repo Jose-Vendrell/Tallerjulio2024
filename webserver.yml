@@ -56,14 +56,13 @@
     notift: Reinicio firewalld
        
   handlers:
-  
-- name: Reinicio Firewalld:
-     ansible.builtin.systemd:
-       name: firewalld
-       state: reload
-  
-  - name: Reiniciar apache
-    ansible.builtin.systemd_service:
-      name: httpd
-      state: restarted
+    - name: Reiniciar Firewalld
+      ansible.builtin.systemd:
+        name: firewalld
+        state: reloaded
+
+    - name: Reiniciar Apache
+      ansible.builtin.systemd:
+        name: httpd
+        state: restarted
 
