@@ -57,4 +57,8 @@ ansible-galaxy collection install –r collections/requirements.yml
 Collections:
   - name: ansible.posix
   - name: community.general
-  - name: community.mysql
+  - name: community.mysql 
+
+## Mas Modulos de Ansible en:
+[Link Ansible modules](https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html)
+### Verificar siempre las versiones para no tener inconvenientes!!!
