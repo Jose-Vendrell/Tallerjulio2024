@@ -88,3 +88,8 @@ Github profesor de la materia
 
 Corregir syntaxis yml:
 [Lector yml](https://yamlchecker.com/)
+
+Creacion documento readme:
+[Make a reedme](https://www.makeareadme.com/)
+
+Tambien se utilizo editar directamente de github en README.md
