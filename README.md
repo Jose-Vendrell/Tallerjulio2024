@@ -59,6 +59,23 @@ Collections:
   - name: community.general
   - name: community.mysql 
 
+## Webserver
+```bash 
+ansible-playbook -i inventory/database.yml --ask-become-pass
+```
+Instala httpd (Apache), abre puertos, habilita firewall y configura virtualhost con el archivo virtualhost.conf en /files/virtualhost.conf
+## Tomcat
+```bash 
+ansible-playbook -i inventory/tomcat.yml hardening.yml --ask-become-pass
+```
+Realiza la instalacion de la herramienta tar, descarga y descomprime tomcat, creando su directorio opt/tomcat, inicia el servicio y copia el archivo todo.war
+## Base de datos
+```bash 
+ansible-playbook -i inventory/database.yml --ask-become-pass
+```
+Configura el firewall y el trafico del mismo, levanta el servicio e installa maria db. 
+Tambien configura la base de datos de la aplicacion y remueve datos de prueba creados por default
+
 ## Mas Modulos de Ansible en:
 [Link Ansible modules](https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html)
 ### Verificar siempre las versiones para no tener inconvenientes!!!
