@@ -21,7 +21,40 @@ Se instala git y se trae los documentos y claves publicas desde github
 •	git config --global user.email joselo_43@hotmail.com
 •	git clone https://github.com/Jose-Vendrell/Tallerjulio2024.git 
 ```
-En .git/config se visualizara la llave publica con url, se puede editar y colocar por ssh. 
-
+En .git/config se visualizara la llave publica con url, se puede editar y colocar por ssh.
+ 
+Se utiliza ssh-copy-id para colocar la llave publica en otros servidores
+```bash
+ ssh-copy-id <IP>
+```
+Las claves publicas se crearon sin contraseña.
 ## Ansible
 Para el uso de ansible se necesita instalar y configurar pipx.
+```bash
+•	dnf install python3-pip
+•	pip install pipx 
+•	pipx ensurepath 
+•	pipx install ansible-core 
+•	pipx inject ansible-core 
+•	pipx inject ansible-core ansible-lint argcomplete 
+•	activate-global-python-argcomplete –user 
+•	. /home/sysadmin/.bash_completion 
+```
+Esto nos permite instalar y gestionar aplicaciones pythone en entornos aislados, ejecutar comandos sin necesidad de especificar la ruta, así como también autocompletados y herramientas para verificar la calidad del código de en los playbooks de Ansible.
+
+Para correr los playbooks se utiliza:
+```bash 
+ansible-playbook -i inventory/servidores hardening.yml --ask-become-pass
+```
+Esto realiza una lectura del archivo, ejecuccion del playbook y solicita contraseña sudo para elevar los privilegios. 
+Utilizando --syntax-check podremos corroborar que el archvo se encuentra correctamente y sin errores de gramatica o espacios.
+
+# Requisitos Ansible
+Para poder trabajar correctamente con los playbooks de este obligatorio, debemos instalar los modulos correspondientes:
+```bash
+ansible-galaxy collection install –r collections/requirements.yml
+```
+Collections:
+  - name: ansible.posix
+  - name: community.general
+  - name: community.mysql
