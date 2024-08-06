@@ -78,6 +78,15 @@ Tambien configura la base de datos de la aplicacion y remueve datos de prueba cr
 ## todo.sql
 Cuenta con la configuracion de la base de datos todo. Este se encuentra en /Tallerjulio2024/files/todo.sql
 
+## App.properties
+El archivo de app properties debe estar en /opt/config/app.properties
+
+```bash
+tipoDB=mysql
+jdbcURL=jdbc:mysql://192.168.56.105:3306/todo
+jdbcUsername=sysadmin
+jdbcPassword=tlxadmin
+```
 ## Referencias
 ### Verificar siempre las versiones para no tener inconvenientes!!!
 Mas Modulos de Ansible en:
