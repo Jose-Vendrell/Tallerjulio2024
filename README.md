@@ -82,4 +82,4 @@ Mas Modulos de Ansible en:
 [Link Ansible modules](https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html)
 ### Verificar siempre las versiones para no tener inconvenientes!!!
 Github profesor de la materia
-[Link Ansible modules](https://github.com/emverdes/TallerJulio2024)
+[Link git emverdes](https://github.com/emverdes/TallerJulio2024)
