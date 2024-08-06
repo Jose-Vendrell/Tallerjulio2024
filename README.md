@@ -61,12 +61,12 @@ Collections:
 
 ## Webserver
 ```bash 
-ansible-playbook -i inventory/database.yml --ask-become-pass
+ansible-playbook -i inventory/webserver.yml --ask-become-pass
 ```
 Instala httpd (Apache), abre puertos, habilita firewall y configura virtualhost con el archivo virtualhost.conf en /files/virtualhost.conf
 ## Tomcat
 ```bash 
-ansible-playbook -i inventory/webserver.yml tomcat.yml --ask-become-pass
+ansible-playbook -i inventory/tomcat.yml --ask-become-pass
 ```
 Realiza la instalacion de la herramienta tar, descarga y descomprime tomcat, creando su directorio opt/tomcat, inicia el servicio y copia el archivo todo.war
 ## Base de datos
