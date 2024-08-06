@@ -37,7 +37,7 @@ Para el uso de ansible se necesita instalar y configurar pipx.
 •	pipx install ansible-core 
 •	pipx inject ansible-core 
 •	pipx inject ansible-core ansible-lint argcomplete 
-•	activate-global-python-argcomplete –user 
+•	activate-global-python-argcomplete --user 
 •	. /home/sysadmin/.bash_completion 
 ```
 Esto nos permite instalar y gestionar aplicaciones pythone en entornos aislados, ejecutar comandos sin necesidad de especificar la ruta, así como también autocompletados y herramientas para verificar la calidad del código de en los playbooks de Ansible.
