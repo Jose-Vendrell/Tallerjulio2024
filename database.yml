@@ -29,6 +29,8 @@
       policy: deny
       direction: incoming
       state: enabled
+      
+## Se levanta el servicio de Firewall de Ubuntu
 
   - name: servicio UFW levantado y activo
     ansible.builtin.systemd_service:
@@ -94,7 +96,9 @@
     mysql_db:
       name: test
       state: absent
-      
+
+## Reinicio servicio mariadb
+
   handlers:
 
   - name: Reiniciar mariadb
