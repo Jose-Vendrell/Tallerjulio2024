@@ -36,21 +36,27 @@
       state: started
       enabled: true
       
-  - name: Actualizar indice de paquetes Apt
-    apt:
-      update-cache: true
-      
 ## Instalación de MariaDB
   
-  - name: MariaDB server instalado
+  - name: MariaDB instalado
     ansible.builtin.apt:
       name: mariadb-server
       state: present
+      update-cache: true
+    loop:
+      - mariadb-server
+      - mariadb-client
+      - python3-pymysql
 
-  - name: MariaDB cliente instalado
-    ansible.builtin.apt:
-      name: mariadb-client
-      state: present
+  - name: Cambiar la configuracion para escuchar en todas las interfaces
+    ansible.builtin.lineinfile:
+      path: /etc/mysql/mariadb.conf.d/50-server.cnf
+      regexp: '^bind-address'
+      line: 'bind-address         = 0.0.0.0'
+    notify: Restart mariadb
+
+  - name: Ejecuto el handler si cambió la configuración
+    meta: flush_handlers
 
   - name: Servidor Mariadb levantado
     ansible.builtin.systemd_service: 
@@ -64,29 +70,23 @@
       port: '3306'
       protocol: tcp
       direction: in
-      state: enabled
 
-##  Configuracion de la base de datos
+##  Configuracion de la base de datos de la aplicación
+
+  - name: Copio el dump de la base de datos
+    ansible.builtin.copy:
+      src: ./files/todo.sql
+      dest: /tmp/todo.sql
 
   - name: Creacion base de datos Todo
     community.mysql.mysql_db:
       check_implicit_admin: true
-      login_host: "{{ hostvars[inventory_hostname].ansible_host }}"
+      login_host: localhost
       login_user: root
       login_password: dbadmin
       name: todo
       state: import
       target: ./files/todo.sql
-    delegate_to: localhost
-    connection: local
-
-  - name: Create Mariadb user
-    mysql_user:
-      name: "{{ sysadmin }}"
-      password: "{{ tlxadmin }}"
-      host: localhost
-      priv: "{{ database }}.*:ALL"
-      state: present
       
 ## Remover base de datos de prueba
 
@@ -94,11 +94,6 @@
     mysql_db:
       name: test
       state: absent
-
-  - name: Recargar tablas de priviligios
-    mysql_privs:
-      name: "{{ mariadb_user }}"
-      state: present
       
   handlers:
 
