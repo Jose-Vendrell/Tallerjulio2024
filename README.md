@@ -14,7 +14,7 @@ centos
 ubuntu
 
 ## GIT
-Se instala git y se trae los documentos y claves publicas desde github
+Se instala git y se trae los documentos y claves publicas desde github. Tambien se baja el repositorio para utilizar los Playbooks
 ```bash
 •	dnf install git
 •	git config --global user.name “Jose Vendrell”
