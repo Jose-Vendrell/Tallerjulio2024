@@ -6,11 +6,15 @@
   
   tasks:
   
+## Instalamos tar para manejar archivos .tar
+
   - name: Instalar tar
     ansible.builtin.dnf:
       name: tar
       state: present
-        
+
+## Descarga y extraccion del archivo tomcat en /opt
+
   - name: Descargar Tomcat
     ansible.builtin.get_url:
       url: "https://downloads.apache.org/tomcat/tomcat-9/v9.0.56/bin/apache-tomcat-9.0.56.tar.gz."
@@ -23,10 +27,6 @@
       dest: "/opt"
       remote_src: true
 
-  - name: Seteo variable con ruta donde está el tomcat
-    ansible.builtin.set_fact:
-      dir_tomcat: "{{ tomcat_file.path | splitext | first | splitext | first }}"
-
   - name: Creo enlace a tomcat
     ansible.builtin.file:
       src: "/opt/tomcat"
@@ -35,6 +35,8 @@
       force: true
         
 ## Los puertos de 8080 se abrieron en el webserver.yml
+
+## Iniciamos el Tomcat
 
   - name: Iniciar Tomcat
     ansible.builtin.systemd_service:
