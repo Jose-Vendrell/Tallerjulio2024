@@ -1,1 +1,38 @@
+---
+- name: Instalar todo en Centos
+  hosts: server01
+  become: true
+  vars:
+    tomcat_version: 9.0.56
+    java_package: java-11-openjdk
+    tomcat_user: tomcat
+    tomcat_group: tomcat
+    tomcat_install_dir: /opt/tomcat
+    tomcat_service_name: tomcat
+  
+  tasks:
+    - name: Instalar Java
+      ansible.builtin.dnf:
+        name: java-11-openjdk
+        state: present
 
+    - name: Instalar Tomcat
+      ansible.builtin.dnf:
+        name: tomcat
+        state: present
+
+    - name: Iniciar y habilitar Tomcat service
+      ansible.builtin.systemd_service:
+        name: tomcat
+        state: started
+        enabled: true
+
+    - name: Copiar Todo.war al directorio de Tomcat
+      ansible.builtin.copy:
+        src: /Tallerjulio2024/files/todo.war
+        dest: /opt/tomcat/webapps/todo.war
+
+    - name: Reiniciar Tomcat
+      ansible.builtin.systemd_service:
+        name: tomcat
+        state: restarted
