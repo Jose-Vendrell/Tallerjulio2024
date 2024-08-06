@@ -81,5 +81,6 @@ Cuenta con la configuracion de la base de datos todo.
 ### Verificar siempre las versiones para no tener inconvenientes!!!
 Mas Modulos de Ansible en:
 [Link Ansible modules](https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html)
+
 Github profesor de la materia
 [Link git emverdes](https://github.com/emverdes/TallerJulio2024)
