@@ -76,7 +76,8 @@ ansible-playbook -i inventory/database.yml --ask-become-pass
 Configura el firewall y el trafico del mismo, levanta el servicio e installa maria db. 
 Tambien configura la base de datos de la aplicacion y remueve datos de prueba creados por default
 ## todo.sql
-Cuenta con la configuracion de la base de datos todo.
+Cuenta con la configuracion de la base de datos todo. Este se encuentra en /Tallerjulio2024/files/todo.sql
+
 ## Referencias
 ### Verificar siempre las versiones para no tener inconvenientes!!!
 Mas Modulos de Ansible en:
@@ -84,3 +85,6 @@ Mas Modulos de Ansible en:
 
 Github profesor de la materia
 [Link git emverdes](https://github.com/emverdes/TallerJulio2024)
+
+Corregir syntaxis yml:
+[Lector yml](https://yamlchecker.com/)
